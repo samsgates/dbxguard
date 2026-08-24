@@ -4,7 +4,11 @@
 
 DBXGuard is an open-source change-intelligence and deployment-safety platform for Databricks. It analyzes repository changes, maps them to a workspace dependency graph, calculates data, reliability, security, AI/ML and cost impact, evaluates policy-as-code, and returns an auditable `ALLOW`, `WARN`, `REQUIRE_APPROVAL`, or `BLOCK` decision.
 
-## What is implemented
+![How DBXGuard Works](media_resources/howitsworks.png)
+
+## Key Features
+
+![DBXGuard Features](media_resources/features.png)
 
 - FastAPI control plane with health, analysis and workspace endpoints.
 - Typer CLI with demo, analyze, diff, policy test and API client commands.
@@ -21,6 +25,8 @@ DBXGuard is an open-source change-intelligence and deployment-safety platform fo
 - Unit and API tests plus a no-account-required demo fixture.
 
 ## Architecture
+
+![DBXGuard Architecture](media_resources/architecture_diagram.png)
 
 ```text
 Git PR / local diff
