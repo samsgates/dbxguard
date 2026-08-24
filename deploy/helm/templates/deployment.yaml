@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: "{{ .Release.Name }}-api"}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector: {matchLabels: {app: dbxguard-api}}
+  template:
+    metadata: {labels: {app: dbxguard-api}}
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports: [{containerPort: 8080}]
+          env:
+            - name: DBXGUARD_DATABASE_URL
+              valueFrom: {secretKeyRef: {name: "{{ .Release.Name }}-secrets", key: database-url}}
+            - name: DBXGUARD_REDIS_URL
+              valueFrom: {secretKeyRef: {name: "{{ .Release.Name }}-secrets", key: redis-url}}
+            - name: DBXGUARD_SECRET_KEY
+              valueFrom: {secretKeyRef: {name: "{{ .Release.Name }}-secrets", key: secret-key}}
+          readinessProbe: {httpGet: {path: /health/ready, port: 8080}, initialDelaySeconds: 5, periodSeconds: 10}
+          livenessProbe: {httpGet: {path: /health/live, port: 8080}, initialDelaySeconds: 10, periodSeconds: 20}

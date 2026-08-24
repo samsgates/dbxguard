@@ -1,0 +1,13 @@
+image:
+  repository: dbxguard/dbxguard
+  tag: "0.1.0"
+  pullPolicy: IfNotPresent
+replicaCount: 2
+service: {type: ClusterIP, port: 8080}
+resources:
+  requests: {cpu: 200m, memory: 256Mi}
+  limits: {cpu: "1", memory: 1Gi}
+env:
+  DBXGUARD_DATABASE_URL: ""
+  DBXGUARD_REDIS_URL: ""
+  DBXGUARD_SECRET_KEY: ""

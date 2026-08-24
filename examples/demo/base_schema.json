@@ -1,0 +1,4 @@
+{
+  "finance.transactions.customer_id": "STRING",
+  "finance.transactions.legacy_segment": "STRING"
+}

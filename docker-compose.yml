@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment: {POSTGRES_USER: dbxguard, POSTGRES_PASSWORD: dbxguard, POSTGRES_DB: dbxguard}
+    healthcheck: {test: ["CMD-SHELL", "pg_isready -U dbxguard"], interval: 5s, timeout: 5s, retries: 10}
+    volumes: [dbxguard-postgres:/var/lib/postgresql/data]
+  redis:
+    image: redis:7-alpine
+  api:
+    build: .
+    environment:
+      DBXGUARD_DATABASE_URL: postgresql+psycopg://dbxguard:dbxguard@postgres:5432/dbxguard
+      DBXGUARD_REDIS_URL: redis://redis:6379/0
+      DBXGUARD_SECRET_KEY: local-compose-secret
+      DBXGUARD_CORS_ORIGINS: http://localhost:3000
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_started}
+    ports: ["8080:8080"]
+  web:
+    build: ./apps/web
+    environment: {NEXT_PUBLIC_API_URL: http://api:8080}
+    ports: ["3000:3000"]
+    depends_on: [api]
+volumes: {dbxguard-postgres: {}}

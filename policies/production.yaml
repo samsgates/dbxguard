@@ -1,0 +1,16 @@
+apiVersion: dbxguard.io/v1
+kind: Policy
+metadata:
+  name: production-destructive-change
+spec:
+  match:
+    environment: production
+  rules:
+    - condition: {operation: DROP_COLUMN}
+      action: BLOCK
+    - condition: {operation: DELETE}
+      action: BLOCK
+    - condition: {operation: TYPE_CHANGE}
+      action: REQUIRE_APPROVAL
+    - condition: {operation: PERMISSION_CHANGE}
+      action: REQUIRE_APPROVAL

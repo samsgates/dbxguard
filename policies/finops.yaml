@@ -1,0 +1,8 @@
+apiVersion: dbxguard.io/v1
+kind: Policy
+metadata:
+  name: finops-compute-review
+spec:
+  rules:
+    - condition: {operation: COMPUTE_CHANGE}
+      action: WARN

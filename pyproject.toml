@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbxguard"
+version = "0.1.0"
+description = "Pre-flight change intelligence and deployment safety for Databricks"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "Apache-2.0"}
+authors = [{name = "DBXGuard Contributors"}]
+dependencies = [
+  "fastapi>=0.116,<1",
+  "uvicorn[standard]>=0.35,<1",
+  "pydantic>=2.11,<3",
+  "pydantic-settings>=2.10,<3",
+  "sqlalchemy>=2.0,<3",
+  "psycopg[binary]>=3.2,<4",
+  "redis>=6,<7",
+  "httpx>=0.28,<1",
+  "PyYAML>=6.0,<7",
+  "typer>=0.16,<1",
+  "rich>=14,<15",
+  "sqlglot>=27,<28",
+  "databricks-sdk>=0.60,<1",
+  "python-jose[cryptography]>=3.5,<4",
+  "passlib[bcrypt]>=1.7,<2",
+  "prometheus-client>=0.22,<1",
+  "opentelemetry-api>=1.36,<2",
+  "opentelemetry-sdk>=1.36,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4,<9",
+  "pytest-cov>=6,<7",
+  "pytest-asyncio>=1,<2",
+  "ruff>=0.12,<1",
+  "mypy>=1.17,<2",
+]
+
+[project.scripts]
+dbxguard = "dbxguard_cli.main:app"
+
+[tool.setuptools.packages.find]
+where = ["apps/api", "apps/cli", "packages/core", "packages/connectors", "packages/parsers", "packages/policy"]
+
+[tool.pytest.ini_options]
+pythonpath = ["apps/api", "apps/cli", "packages/core", "packages/connectors", "packages/parsers", "packages/policy"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
